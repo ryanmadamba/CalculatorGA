@@ -7,6 +7,7 @@ import javafx.scene.layout.VBox;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.layout.GridPane;
+import java.lang.Math;
 
 public class calculator extends Application{
 	
@@ -28,6 +29,7 @@ public class calculator extends Application{
 	Button equal;
 	Button clear;
 	Button decimal;
+	Button log;
 	
 	int flag = 0;
 	String preop = "";
@@ -52,6 +54,16 @@ public class calculator extends Application{
 		
 		//buttons
 		GridPane buttons = new GridPane();
+		
+		log = new Button("log10");
+		log.setOnAction(new EventHandler<ActionEvent>() { //sets what button does
+			
+			public void handle(ActionEvent event) {
+				answer.setText("log base 10");
+				operator = "log";
+				flag = 1;
+			}
+		});
 		
 		clear = new Button("Clear");
 		clear.setOnAction(new EventHandler<ActionEvent>() { //sets what button does
@@ -118,21 +130,28 @@ public class calculator extends Application{
 				else {
 					pre = Double.parseDouble(preop);
 				}
-				post = Double.parseDouble(postop);
 				switch (operator) {
+				case "log":
+					result = Math.log10(pre);
+					answer.setText(Double.toString(result));
+					break;
 				case "+":
+					post = Double.parseDouble(postop);
 					result = pre + post;
 					answer.setText(Double.toString(result));
 					break;
 				case "-":
+					post = Double.parseDouble(postop);
 					result = pre - post;
 					answer.setText(Double.toString(result));
 					break;
 				case "*":
+					post = Double.parseDouble(postop);
 					result = pre * post;
 					answer.setText(Double.toString(result));
 					break;
 				case "/":
+					post = Double.parseDouble(postop);
 					if (post == 0) {
 						answer.setText("Error");
 					}
@@ -339,6 +358,7 @@ public class calculator extends Application{
 		buttons.add(equal, 2, 3);
 		
 		buttons.add(clear, 0, 4, 4, 1);
+		buttons.add(log, 2, 4);
 		
 		
 		root.getChildren().addAll(answer, buttons); //node inside root
